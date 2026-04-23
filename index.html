@@ -2,301 +2,161 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Despensa Pro - Consultor Técnico Avançado</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Despensa Pro - Versão Estável</title>
     <style>
-        :root {
-            --primary: #2e7d32;
-            --primary-light: #4caf50;
-            --accent: #00acc1;
-            --warning: #ff9100;
-            --danger: #ff5252;
-            --mp-blue: #009ee3;
-            --bg: #f0f4f8;
-            --glass: rgba(255, 255, 255, 0.9);
-            --shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, sans-serif;
-            background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
-            margin: 0;
-            color: #243b53;
-            min-height: 100vh;
-        }
-
-        header {
-            background: var(--primary);
-            color: white;
-            padding: 2rem 1rem;
-            text-align: center;
-            border-radius: 0 0 30px 30px;
-            box-shadow: 0 4px 20px rgba(46, 125, 50, 0.3);
-            margin-bottom: 2rem;
-        }
-
-        header h1 { margin: 0; font-weight: 800; font-size: 1.8rem; letter-spacing: -1px; }
-
-        .container { max-width: 500px; margin: 0 auto; padding: 0 20px 40px; }
-
-        .card {
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.5);
-            border-radius: 24px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: var(--shadow);
-        }
-
-        h2 { font-size: 1.1rem; color: var(--primary); margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
-
-        .form-group { display: flex; flex-direction: column; gap: 15px; }
-
-        label { font-size: 0.75rem; font-weight: 800; color: #627d98; margin-bottom: 5px; display: block; }
-
-        input {
-            width: 100%;
-            padding: 14px;
-            border-radius: 12px;
-            border: 1px solid #d9e2ec;
-            background: #f0f4f8;
-            box-sizing: border-box;
-            font-size: 1rem;
-        }
-
-        .btn-add {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 16px;
-            border-radius: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .btn-add:hover { background: #1b5e20; }
-
-        .item-card {
-            background: white;
-            border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-left: 8px solid var(--primary-light);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-
-        .item-card.vencendo { border-left-color: var(--warning); background: #fffcf5; }
-        .item-card.vencido { border-left-color: var(--danger); background: #fff5f5; }
-
-        .status-txt { font-size: 0.8rem; font-weight: 700; margin-top: 4px; display: block; }
-        .vencendo-txt { color: var(--warning); }
-        .vencido-txt { color: var(--danger); }
-
-        .btn-del {
-            background: #f0f4f8;
-            border: none;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            color: #9fb3c8;
-            cursor: pointer;
-        }
-
-        /* Guia Técnico Detalhado */
-        .tip-card {
-            background: #ffffff;
-            border-radius: 16px;
-            padding: 20px;
-            margin-top: 15px;
-            border-left: 6px solid var(--accent);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        }
-
-        .tip-card.hortifruti { border-left-color: #7cb342; background: #f9fbf7; }
-        .tip-card.frio { border-left-color: #00897b; background: #f4f9f9; }
-
-        .tip-card strong { color: #102a43; font-size: 1rem; display: block; margin-bottom: 10px; border-bottom: 1px solid #e4e7eb; padding-bottom: 5px; }
-        .tip-card p { margin: 0; font-size: 0.88rem; color: #334e68; line-height: 1.6; }
-        .tip-card .por-que-title { font-weight: 800; color: #243b53; display: block; margin-top: 10px; font-size: 0.8rem; text-transform: uppercase; }
-
-        .btn-support {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            background: var(--mp-blue);
-            color: white;
-            text-decoration: none;
-            padding: 18px;
-            border-radius: 15px;
-            font-weight: 800;
-            font-size: 0.9rem;
-            transition: 0.3s;
-        }
+        :root { --primary: #1b5e20; --primary-light: #4caf50; --accent: #00acc1; --warning: #ff9100; --danger: #d32f2f; --bg: #f4f7f6; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background-color: var(--bg); margin: 0; padding-bottom: 250px; color: #333; }
+        header { background: var(--primary); color: white; padding: 10px; text-align: center; position: sticky; top: 0; z-index: 100; }
+        header h1 { margin: 0; font-size: 1.2rem; }
+        .container { max-width: 450px; margin: 0 auto; padding: 10px; }
+        .card { background: #fff; border-radius: 10px; padding: 15px; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        h2 { font-size: 0.75rem; color: var(--primary); text-transform: uppercase; margin-bottom: 10px; border-bottom: 1px solid #eee; font-weight: 800; }
+        .form-group { margin-bottom: 10px; }
+        label { font-size: 0.65rem; font-weight: 800; color: #666; display: block; margin-bottom: 3px; }
+        input { width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ccc; box-sizing: border-box; font-size: 16px; }
+        .btn { width: 100%; padding: 14px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; }
+        .btn-add { background: var(--primary); color: white; }
+        .item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #fff; border-radius: 8px; margin-bottom: 8px; border-left: 5px solid var(--primary-light); border: 1px solid #eee; }
+        .item.vencendo { border-left-color: var(--warning); background: #fffcf0; }
+        .item.vencido { border-left-color: var(--danger); background: #fff5f5; }
+        .item b { font-size: 0.95rem; display: block; }
+        .item small { font-size: 0.75rem; color: #666; }
+        .tip-card { background: #e1f5fe; border-radius: 8px; padding: 12px; margin-top: 10px; border-left: 4px solid var(--accent); font-size: 0.8rem; line-height: 1.4; }
+        #backup-area { width: 100%; height: 60px; font-size: 0.7rem; margin-top: 10px; display: none; }
+        .support { display: block; background: #009ee3; color: white; text-align: center; text-decoration: none; padding: 15px; border-radius: 10px; font-weight: bold; margin-top: 20px; }
     </style>
 </head>
 <body>
 
-<header>
-    <h1>DESPENSA PRO</h1>
-</header>
+<header><h1>DESPENSA PRO</h1></header>
 
 <div class="container">
     <div class="card">
-        <h2>📦 NOVO REGISTRO</h2>
+        <h2>📦 CADASTRAR PRODUTO</h2>
         <div class="form-group">
-            <div>
-                <label>PRODUTO</label>
-                <input type="text" id="prod-nome" placeholder="Ex: Carne, Banana, Arroz...">
-            </div>
-            <div>
-                <label>DATA DE VALIDADE</label>
-                <input type="date" id="prod-validade">
-            </div>
-            <button class="btn-add" onclick="adicionarItem()">SALVAR NO ESTOQUE</button>
+            <label>NOME DO ALIMENTO</label>
+            <input type="text" id="nome" list="sugestoes" placeholder="Ex: Carne Bovina">
         </div>
+        <div class="form-group">
+            <label>DATA DE VALIDADE</label>
+            <input type="date" id="data">
+        </div>
+        <button class="btn btn-add" onclick="adicionar()">SALVAR NO ESTOQUE</button>
     </div>
 
     <div class="card">
         <h2>📋 MONITORAMENTO</h2>
-        <div id="lista-estoque"></div>
+        <div id="lista-alimentos"></div>
     </div>
 
     <div class="card">
-        <h2>💡 GUIA TÉCNICO AVANÇADO</h2>
-        <div id="dicas-armazenamento"></div>
+        <h2>💡 GUIA TÉCNICO</h2>
+        <div id="guia-tecnico"></div>
     </div>
 
-    <div class="card" style="text-align: center; border: 1px dashed var(--mp-blue);">
-        <h2 style="color: var(--mp-blue); justify-content: center;">💙 APOIE O PROJETO</h2>
-        <a href="https://mpago.la/2cixZQ9" target="_blank" class="btn-support">
-            Apoiar via Mercado Pago
-        </a>
+    <div class="card" style="background: #f1f8e9;">
+        <h2>☁️ BACKUP SEGURO</h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+            <button class="btn" style="background: #eceff1; font-size: 0.7rem;" onclick="gerarBackup()">GERAR CÓDIGO</button>
+            <button class="btn" style="background: #fff; border: 1px solid #ccc; font-size: 0.7rem;" onclick="restaurarBackup()">RESTAURAR</button>
+        </div>
+        <textarea id="backup-area" placeholder="Cole seu código aqui..."></textarea>
     </div>
+
+    <a href="https://mpago.la/2cixZQ9" target="_blank" class="support">APOIAR PROJETO</a>
 </div>
 
+<datalist id="sugestoes">
+    <option value="Arroz"><option value="Feijão"><option value="Carne Bovina"><option value="Frango">
+    <option value="Banana"><option value="Leite"><option value="Ovos"><option value="Alface">
+</datalist>
+
 <script>
-    let estoque = JSON.parse(localStorage.getItem('despensa_v_ultra')) || [];
+    // Chave única para garantir estabilidade dos dados
+    const DB_KEY = 'despensa_pro_final_v1';
+    let estoque = JSON.parse(localStorage.getItem(DB_KEY)) || [];
 
-    function calcularDias(dataValidade) {
-        const hoje = new Date(); hoje.setHours(0,0,0,0);
-        const val = new Date(dataValidade); val.setHours(0,0,0,0);
-        return Math.ceil((val - hoje) / (1000 * 60 * 60 * 24));
-    }
-
-    function adicionarItem() {
-        const nome = document.getElementById('prod-nome').value;
-        const validade = document.getElementById('prod-validade').value;
-        if (!nome || !validade) return alert("Preencha todos os campos!");
-        estoque.push({ id: Date.now(), nome: nome, validade: validade });
+    function adicionar() {
+        const nome = document.getElementById('nome').value;
+        const data = document.getElementById('data').value;
+        if(!nome || !data) return alert("Preencha todos os campos!");
+        estoque.push({ id: Date.now(), nome, data });
         salvar();
-        document.getElementById('prod-nome').value = '';
-        document.getElementById('prod-validade').value = '';
+        document.getElementById('nome').value = '';
+        document.getElementById('data').value = '';
     }
 
-    function confirmarRemocao(id, nome) {
-        if (confirm(`Remover "${nome}" da lista?`)) {
+    function deletar(id) {
+        if(confirm("Remover este item?")) {
             estoque = estoque.filter(i => i.id !== id);
             salvar();
         }
     }
 
     function salvar() {
-        localStorage.setItem('despensa_v_ultra', JSON.stringify(estoque));
+        localStorage.setItem(DB_KEY, JSON.stringify(estoque));
         renderizar();
     }
 
     function renderizar() {
-        const lista = document.getElementById('lista-estoque');
-        const dicasDiv = document.getElementById('dicas-armazenamento');
-        lista.innerHTML = '';
-        estoque.sort((a, b) => new Date(a.validade) - new Date(b.validade));
+        const div = document.getElementById('lista-alimentos');
+        const guia = document.getElementById('guia-tecnico');
+        div.innerHTML = ''; guia.innerHTML = '';
+        estoque.sort((a,b) => new Date(a.data) - new Date(b.data));
 
-        estoque.forEach(item => {
-            const dias = calcularDias(item.validade);
-            const dt = new Date(item.validade).toLocaleDateString('pt-br', {timeZone: 'UTC'});
-            let classe = dias < 0 ? 'vencido' : (dias <= 10 ? 'vencendo' : '');
-            let statusTxt = dias < 0 ? `Vencido há ${Math.abs(dias)} dias` : `Faltam ${dias} dias`;
-
-            lista.innerHTML += `
-                <div class="item-card ${classe}">
+        estoque.forEach(i => {
+            const dias = Math.ceil((new Date(i.data) - new Date().setHours(0,0,0,0)) / 86400000);
+            const dataF = new Date(i.data).toLocaleDateString('pt-br', {timeZone: 'UTC'});
+            let classe = dias < 0 ? 'vencido' : (dias <= 5 ? 'vencendo' : '');
+            
+            div.innerHTML += `
+                <div class="item ${classe}">
                     <div>
-                        <strong>${item.nome}</strong>
-                        <span style="font-size:0.8rem; color:#627d98; display:block;">Validade: ${dt}</span>
-                        <span class="status-txt ${dias < 0 ? 'vencido-txt' : (dias <= 10 ? 'vencendo-txt' : '')}">${statusTxt}</span>
+                        <b>${i.nome}</b>
+                        <small>${dias < 0 ? 'Vencido' : 'Vence em '+dias+' dias'}</small>
+                        <small style="display:block; color:#999">Validade: ${dataF}</small>
                     </div>
-                    <button class="btn-del" onclick="confirmarRemocao(${item.id}, '${item.nome}')">✕</button>
+                    <button onclick="deletar(${i.id})" style="background:none; border:none; color:#ccc; font-size:1.2rem;">✕</button>
                 </div>`;
+            aplicarGuia(i.nome, guia);
         });
-        gerarSugestoes(dicasDiv);
     }
 
-    function gerarSugestoes(container) {
-        const nomes = estoque.map(i => i.nome.toLowerCase());
-        let html = "";
-        
-        const sugestoes = [
-            { 
-                chaves: ['arroz', 'feijão', 'macarrão', 'farinha'], 
-                tipo: 'seco', 
-                titulo: "GRÃOS E CEREAIS (ESTOCAGEM SECA)", 
-                recomendacao: "Manter em recipientes herméticos em local seco e escuro.",
-                detalhe: "A umidade relativa do ar acima de 60% favorece a atividade de água nos grãos, permitindo o crescimento de fungos e a eclosão de ovos de carunchos já presentes no campo.",
-                porQue: "O isolamento hermético impede a troca de umidade com o ambiente e a fotoxidação de nutrientes sensíveis à luz."
-            },
-            { 
-                chaves: ['banana', 'maçã', 'manga', 'mamão'], 
-                tipo: 'hortifruti', 
-                titulo: "FRUTAS CLIMATÉRICAS", 
-                recomendacao: "Armazenar em local ventilado e separar por grau de maturação.",
-                detalhe: "Frutas climatéricas continuam respirando intensamente após a colheita, liberando fitormônios como o gás etileno (C₂H₄).",
-                porQue: "O etileno funciona como um sinalizador químico que acelera a quebra de amido em açúcares; se concentrado, causa o amadurecimento precoce e a senescência (morte celular) de todos os vegetais vizinhos."
-            },
-            { 
-                chaves: ['carne', 'frango', 'peixe', 'suíno'], 
-                tipo: 'frio', 
-                titulo: "PROTEÍNAS ANIMAIS", 
-                recomendacao: "Zonas de frio máximo (freezer ou gaveta de degelo).",
-                detalhe: "Carnes possuem alto teor de aminoácidos livres e água, sendo o meio de cultura ideal para bactérias psicrófilas e mesófilas.",
-                porQue: "Temperaturas próximas de 0°C ou negativas retardam a cinética enzimática e a replicação bacteriana, prevenindo a formação de toxinas e a oxidação lipídica (ranço)."
-            },
-            { 
-                chaves: ['alface', 'couve', 'rúcula', 'espinafre'], 
-                tipo: 'hortifruti', 
-                titulo: "HORTALIÇAS FOLHOSAS", 
-                recomendacao: "Secagem mecânica e armazenamento com camadas absorventes.",
-                detalhe: "Folhas possuem alta área superficial, o que facilita a perda de água por transpiração e a contaminação por microrganismos de deterioração.",
-                porQue: "O papel toalha absorve o excesso de umidade que condensaria no plástico, evitando a 'queima' por frio e o apodrecimento bacteriano por excesso de água livre."
-            },
-            { 
-                chaves: ['ovo'], 
-                tipo: 'frio', 
-                titulo: "OVOS DE AVES", 
-                recomendacao: "Manter na embalagem original na prateleira interna da geladeira.",
-                detalhe: "A casca do ovo é porosa e permite trocas gasosas; a movimentação constante na porta da geladeira causa microfissuras e estresse térmico.",
-                porQue: "A temperatura constante no corpo da geladeira mantém a integridade da câmara de ar interna e reduz o risco de salmonela por condensação na casca."
-            }
+    function aplicarGuia(nome, container) {
+        const n = nome.toLowerCase();
+        const base = [
+            { c: ['arroz', 'feijão'], t: "Grãos", d: "Mantenha em recipientes herméticos para evitar carunchos e umidade." },
+            { c: ['carne', 'frango'], t: "Proteínas", d: "A oxidação lipídica ocorre rápido acima de 4°C. Mantenha em frio máximo." },
+            { c: ['banana', 'maçã'], t: "Climatéricos", d: "Liberam gás etileno. Devem ser mantidos ventilados e longe de folhas." },
+            { c: ['leite', 'queijo'], t: "Laticínios", d: "Altamente perecíveis. Após aberto, consumir em no máximo 3 dias." },
+            { c: ['alface', 'folhas'], t: "Hortaliças", d: "Use papel toalha no pote para absorver a umidade e evitar fungos." }
         ];
-
-        sugestoes.forEach(s => {
-            if (nomes.some(n => s.chaves.some(c => n.includes(c)))) {
-                html += `
-                    <div class="tip-card ${s.tipo}">
-                        <strong>🔍 ${s.titulo}</strong>
-                        <p><strong>Recomendação:</strong> ${s.recomendacao}</p>
-                        <p style="margin-top:8px;">${s.detalhe}</p>
-                        <span class="por-que-title">Análise Técnica</span>
-                        <p>${s.porQue}</p>
-                    </div>`;
+        base.forEach(item => {
+            if (item.c.some(key => n.includes(key))) {
+                if (!container.innerHTML.includes(item.t)) {
+                    container.innerHTML += `<div class="tip-card"><strong>🔍 ${item.t}:</strong> ${item.d}</div>`;
+                }
             }
         });
+    }
 
-        container.innerHTML = html || "<p style='color:#9fb3c8; font-size:0.85rem;'>Adicione itens para gerar a análise técnica de conservação.</p>";
+    function gerarBackup() {
+        const code = btoa(JSON.stringify(estoque));
+        const area = document.getElementById('backup-area');
+        area.value = code; area.style.display = 'block';
+        area.select(); document.execCommand('copy');
+        alert("Código de backup copiado!");
+    }
+
+    function restaurarBackup() {
+        const code = document.getElementById('backup-area').value;
+        try {
+            estoque = JSON.parse(atob(code));
+            salvar();
+            alert("Dados restaurados!");
+            document.getElementById('backup-area').style.display = 'none';
+        } catch(e) { alert("Código inválido!"); }
     }
 
     renderizar();
