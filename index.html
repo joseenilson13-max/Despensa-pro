@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Despensa Pro - Consultor Técnico</title>
+    <title>Despensa Pro - Consultor Técnico Avançado</title>
     <style>
         :root {
             --primary: #2e7d32;
@@ -11,6 +11,7 @@
             --accent: #00acc1;
             --warning: #ff9100;
             --danger: #ff5252;
+            --mp-blue: #009ee3;
             --bg: #f0f4f8;
             --glass: rgba(255, 255, 255, 0.9);
             --shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
@@ -106,24 +107,37 @@
             cursor: pointer;
         }
 
-        /* Dicas Estilizadas por Categoria */
+        /* Guia Técnico Detalhado */
         .tip-card {
-            background: #e3f2fd;
+            background: #ffffff;
             border-radius: 16px;
-            padding: 18px;
-            margin-top: 12px;
-            border-left: 5px solid var(--accent);
-            animation: slideIn 0.4s ease-out;
+            padding: 20px;
+            margin-top: 15px;
+            border-left: 6px solid var(--accent);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
 
-        .tip-card.hortifruti { background: #f1f8e9; border-left-color: #7cb342; }
-        .tip-card.frio { background: #e0f2f1; border-left-color: #00897b; }
+        .tip-card.hortifruti { border-left-color: #7cb342; background: #f9fbf7; }
+        .tip-card.frio { border-left-color: #00897b; background: #f4f9f9; }
 
-        .tip-card strong { color: #102a43; font-size: 0.95rem; display: block; margin-bottom: 8px; }
-        .tip-card p { margin: 0; font-size: 0.85rem; color: #334e68; line-height: 1.5; }
-        .tip-card .por-que { font-weight: 700; color: inherit; margin-top: 5px; display: block; font-size: 0.75rem; }
+        .tip-card strong { color: #102a43; font-size: 1rem; display: block; margin-bottom: 10px; border-bottom: 1px solid #e4e7eb; padding-bottom: 5px; }
+        .tip-card p { margin: 0; font-size: 0.88rem; color: #334e68; line-height: 1.6; }
+        .tip-card .por-que-title { font-weight: 800; color: #243b53; display: block; margin-top: 10px; font-size: 0.8rem; text-transform: uppercase; }
 
-        @keyframes slideIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
+        .btn-support {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: var(--mp-blue);
+            color: white;
+            text-decoration: none;
+            padding: 18px;
+            border-radius: 15px;
+            font-weight: 800;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
     </style>
 </head>
 <body>
@@ -138,7 +152,7 @@
         <div class="form-group">
             <div>
                 <label>PRODUTO</label>
-                <input type="text" id="prod-nome" placeholder="Ex: Banana, Alface, Carne...">
+                <input type="text" id="prod-nome" placeholder="Ex: Carne, Banana, Arroz...">
             </div>
             <div>
                 <label>DATA DE VALIDADE</label>
@@ -154,13 +168,20 @@
     </div>
 
     <div class="card">
-        <h2>💡 GUIA TÉCNICO DE CONSERVAÇÃO</h2>
+        <h2>💡 GUIA TÉCNICO AVANÇADO</h2>
         <div id="dicas-armazenamento"></div>
+    </div>
+
+    <div class="card" style="text-align: center; border: 1px dashed var(--mp-blue);">
+        <h2 style="color: var(--mp-blue); justify-content: center;">💙 APOIE O PROJETO</h2>
+        <a href="https://mpago.la/2cixZQ9" target="_blank" class="btn-support">
+            Apoiar via Mercado Pago
+        </a>
     </div>
 </div>
 
 <script>
-    let estoque = JSON.parse(localStorage.getItem('despensa_v_agro')) || [];
+    let estoque = JSON.parse(localStorage.getItem('despensa_v_ultra')) || [];
 
     function calcularDias(dataValidade) {
         const hoje = new Date(); hoje.setHours(0,0,0,0);
@@ -186,7 +207,7 @@
     }
 
     function salvar() {
-        localStorage.setItem('despensa_v_agro', JSON.stringify(estoque));
+        localStorage.setItem('despensa_v_ultra', JSON.stringify(estoque));
         renderizar();
     }
 
@@ -220,24 +241,62 @@
         let html = "";
         
         const sugestoes = [
-            { chaves: ['banana', 'maçã', 'manga'], tipo: 'hortifruti', titulo: "FRUTAS CLIMATÉRICAS", dica: "Armazenar fora da geladeira até amadurecer.", motivo: "Essas frutas liberam gás etileno. Se guardadas em sacos fechados ou locais abafados, o gás acelera o apodrecimento de tudo ao redor." },
-            { chaves: ['alface', 'rúcula', 'couve'], tipo: 'hortifruti', titulo: "FOLHOSAS", dica: "Lavar, secar bem e guardar em potes com papel toalha.", motivo: "A umidade excessiva nas folhas favorece a proliferação de fungos e bactérias, fazendo-as murchar e apodrecer em poucos dias." },
-            { chaves: ['tomate'], tipo: 'hortifruti', titulo: "TOMATES", dica: "Guardar com a 'bundinha' para cima e fora da geladeira (se verdes).", motivo: "O frio da geladeira rompe as membranas celulares do tomate, alterando o sabor e deixando a textura farinhenta." },
-            { chaves: ['batata', 'cebola'], tipo: 'seco', titulo: "TUBÉRCULOS", dica: "Local escuro, arejado e NUNCA juntas.", motivo: "A cebola libera gases que fazem a batata brotar (germinar) muito mais rápido, perdendo suas propriedades nutricionais." },
-            { chaves: ['uva', 'morango'], tipo: 'hortifruti', titulo: "FRUTAS SENSÍVEIS", dica: "Só lavar na hora exata de comer.", motivo: "A água remove a proteção natural da casca e acelera a oxidação e o surgimento de mofo." }
+            { 
+                chaves: ['arroz', 'feijão', 'macarrão', 'farinha'], 
+                tipo: 'seco', 
+                titulo: "GRÃOS E CEREAIS (ESTOCAGEM SECA)", 
+                recomendacao: "Manter em recipientes herméticos em local seco e escuro.",
+                detalhe: "A umidade relativa do ar acima de 60% favorece a atividade de água nos grãos, permitindo o crescimento de fungos e a eclosão de ovos de carunchos já presentes no campo.",
+                porQue: "O isolamento hermético impede a troca de umidade com o ambiente e a fotoxidação de nutrientes sensíveis à luz."
+            },
+            { 
+                chaves: ['banana', 'maçã', 'manga', 'mamão'], 
+                tipo: 'hortifruti', 
+                titulo: "FRUTAS CLIMATÉRICAS", 
+                recomendacao: "Armazenar em local ventilado e separar por grau de maturação.",
+                detalhe: "Frutas climatéricas continuam respirando intensamente após a colheita, liberando fitormônios como o gás etileno (C₂H₄).",
+                porQue: "O etileno funciona como um sinalizador químico que acelera a quebra de amido em açúcares; se concentrado, causa o amadurecimento precoce e a senescência (morte celular) de todos os vegetais vizinhos."
+            },
+            { 
+                chaves: ['carne', 'frango', 'peixe', 'suíno'], 
+                tipo: 'frio', 
+                titulo: "PROTEÍNAS ANIMAIS", 
+                recomendacao: "Zonas de frio máximo (freezer ou gaveta de degelo).",
+                detalhe: "Carnes possuem alto teor de aminoácidos livres e água, sendo o meio de cultura ideal para bactérias psicrófilas e mesófilas.",
+                porQue: "Temperaturas próximas de 0°C ou negativas retardam a cinética enzimática e a replicação bacteriana, prevenindo a formação de toxinas e a oxidação lipídica (ranço)."
+            },
+            { 
+                chaves: ['alface', 'couve', 'rúcula', 'espinafre'], 
+                tipo: 'hortifruti', 
+                titulo: "HORTALIÇAS FOLHOSAS", 
+                recomendacao: "Secagem mecânica e armazenamento com camadas absorventes.",
+                detalhe: "Folhas possuem alta área superficial, o que facilita a perda de água por transpiração e a contaminação por microrganismos de deterioração.",
+                porQue: "O papel toalha absorve o excesso de umidade que condensaria no plástico, evitando a 'queima' por frio e o apodrecimento bacteriano por excesso de água livre."
+            },
+            { 
+                chaves: ['ovo'], 
+                tipo: 'frio', 
+                titulo: "OVOS DE AVES", 
+                recomendacao: "Manter na embalagem original na prateleira interna da geladeira.",
+                detalhe: "A casca do ovo é porosa e permite trocas gasosas; a movimentação constante na porta da geladeira causa microfissuras e estresse térmico.",
+                porQue: "A temperatura constante no corpo da geladeira mantém a integridade da câmara de ar interna e reduz o risco de salmonela por condensação na casca."
+            }
         ];
 
         sugestoes.forEach(s => {
             if (nomes.some(n => s.chaves.some(c => n.includes(c)))) {
                 html += `
                     <div class="tip-card ${s.tipo}">
-                        <strong>✨ ${s.titulo}: ${s.dica}</strong>
-                        <p><span class="por-que">POR QUÊ?</span> ${s.motivo}</p>
+                        <strong>🔍 ${s.titulo}</strong>
+                        <p><strong>Recomendação:</strong> ${s.recomendacao}</p>
+                        <p style="margin-top:8px;">${s.detalhe}</p>
+                        <span class="por-que-title">Análise Técnica</span>
+                        <p>${s.porQue}</p>
                     </div>`;
             }
         });
 
-        container.innerHTML = html || "<p style='color:#9fb3c8; font-size:0.85rem;'>As recomendações de hortifrúti aparecerão aqui conforme você adicionar os itens.</p>";
+        container.innerHTML = html || "<p style='color:#9fb3c8; font-size:0.85rem;'>Adicione itens para gerar a análise técnica de conservação.</p>";
     }
 
     renderizar();
