@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Despensa Pro - Consultor de Armazenamento</title>
+    <title>Despensa Pro - Consultor Técnico</title>
     <style>
         :root {
             --primary: #2e7d32;
@@ -37,25 +37,6 @@
         header h1 { margin: 0; font-weight: 800; font-size: 1.8rem; letter-spacing: -1px; }
 
         .container { max-width: 500px; margin: 0 auto; padding: 0 20px 40px; }
-
-        .notif-btn {
-            background: var(--glass);
-            border: 1px solid rgba(255,255,255,0.3);
-            backdrop-filter: blur(10px);
-            color: var(--accent);
-            width: 100%;
-            padding: 15px;
-            border-radius: 15px;
-            font-weight: 700;
-            cursor: pointer;
-            box-shadow: var(--shadow);
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transition: 0.3s;
-        }
 
         .card {
             background: var(--glass);
@@ -91,7 +72,10 @@
             border-radius: 12px;
             font-weight: 700;
             cursor: pointer;
+            transition: 0.3s;
         }
+
+        .btn-add:hover { background: #1b5e20; }
 
         .item-card {
             background: white;
@@ -102,6 +86,7 @@
             justify-content: space-between;
             align-items: center;
             border-left: 8px solid var(--primary-light);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
 
         .item-card.vencendo { border-left-color: var(--warning); background: #fffcf5; }
@@ -121,24 +106,24 @@
             cursor: pointer;
         }
 
-        /* Estilo das Dicas Sugeridas */
+        /* Dicas Estilizadas por Categoria */
         .tip-card {
             background: #e3f2fd;
             border-radius: 16px;
             padding: 18px;
             margin-top: 12px;
             border-left: 5px solid var(--accent);
-            animation: fadeIn 0.5s ease;
+            animation: slideIn 0.4s ease-out;
         }
 
+        .tip-card.hortifruti { background: #f1f8e9; border-left-color: #7cb342; }
         .tip-card.frio { background: #e0f2f1; border-left-color: #00897b; }
-        .tip-card.limpeza { background: #f3e5f5; border-left-color: #8e24aa; }
 
         .tip-card strong { color: #102a43; font-size: 0.95rem; display: block; margin-bottom: 8px; }
         .tip-card p { margin: 0; font-size: 0.85rem; color: #334e68; line-height: 1.5; }
-        .tip-card .por-que { font-weight: 700; color: inherit; margin-top: 5px; display: block; }
+        .tip-card .por-que { font-weight: 700; color: inherit; margin-top: 5px; display: block; font-size: 0.75rem; }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
     </style>
 </head>
 <body>
@@ -148,19 +133,15 @@
 </header>
 
 <div class="container">
-    <button id="btn-notificacao" class="notif-btn" onclick="solicitarPermissao()">
-        🔔 ATIVAR ALERTAS INTELIGENTES
-    </button>
-
     <div class="card">
         <h2>📦 NOVO REGISTRO</h2>
         <div class="form-group">
             <div>
                 <label>PRODUTO</label>
-                <input type="text" id="prod-nome" placeholder="Ex: Carne, Banana, Sabão...">
+                <input type="text" id="prod-nome" placeholder="Ex: Banana, Alface, Carne...">
             </div>
             <div>
-                <label>DATA</label>
+                <label>DATA DE VALIDADE</label>
                 <input type="date" id="prod-validade">
             </div>
             <button class="btn-add" onclick="adicionarItem()">SALVAR NO ESTOQUE</button>
@@ -173,35 +154,13 @@
     </div>
 
     <div class="card">
-        <h2>💡 GUIA TÉCNICO DE SUGESTÕES</h2>
+        <h2>💡 GUIA TÉCNICO DE CONSERVAÇÃO</h2>
         <div id="dicas-armazenamento"></div>
     </div>
 </div>
 
 <script>
-    let estoque = JSON.parse(localStorage.getItem('despensa_v_final')) || [];
-
-    // Lógica de Notificações
-    function solicitarPermissao() {
-        if (!("Notification" in window)) return alert("Sem suporte a notificações.");
-        Notification.requestPermission().then(p => {
-            if (p === "granted") {
-                alert("Alertas ativos para 10 dias de antecedência!");
-                document.getElementById('btn-notificacao').style.display = 'none';
-                verificarAlertas();
-            }
-        });
-    }
-
-    function verificarAlertas() {
-        if (Notification.permission !== "granted") return;
-        estoque.forEach(item => {
-            const dias = calcularDias(item.validade);
-            if (dias >= 0 && dias <= 10) {
-                new Notification("Alerta de Consumo!", { body: `${item.nome} vence em ${dias} dias.` });
-            }
-        });
-    }
+    let estoque = JSON.parse(localStorage.getItem('despensa_v_agro')) || [];
 
     function calcularDias(dataValidade) {
         const hoje = new Date(); hoje.setHours(0,0,0,0);
@@ -216,17 +175,18 @@
         estoque.push({ id: Date.now(), nome: nome, validade: validade });
         salvar();
         document.getElementById('prod-nome').value = '';
+        document.getElementById('prod-validade').value = '';
     }
 
     function confirmarRemocao(id, nome) {
-        if (confirm(`Excluir "${nome}" do sistema?`)) {
+        if (confirm(`Remover "${nome}" da lista?`)) {
             estoque = estoque.filter(i => i.id !== id);
             salvar();
         }
     }
 
     function salvar() {
-        localStorage.setItem('despensa_v_final', JSON.stringify(estoque));
+        localStorage.setItem('despensa_v_agro', JSON.stringify(estoque));
         renderizar();
     }
 
@@ -255,17 +215,16 @@
         gerarSugestoes(dicasDiv);
     }
 
-    // BASE DE DADOS DE SUGESTÕES TÉCNICAS
     function gerarSugestoes(container) {
         const nomes = estoque.map(i => i.nome.toLowerCase());
         let html = "";
         
         const sugestoes = [
-            { chaves: ['arroz', 'feijão', 'farinha', 'macarrão'], tipo: 'seco', titulo: "GRÃOS E CEREAIS", dica: "Armazenar em potes de vidro ou plástico rígido hermético.", motivo: "Evita a infestação por carunchos e mantém a crocância ao impedir a entrada de umidade." },
-            { chaves: ['carne', 'frango', 'peixe'], tipo: 'frio', titulo: "PROTEÍNAS", dica: "Manter no freezer ou na gaveta superior de congelamento.", motivo: "Proteínas oxidam e degradam rapidamente sob flutuação de temperatura; o congelamento interrompe a atividade bacteriana." },
-            { chaves: ['banana', 'maçã', 'tomate'], tipo: 'frio', titulo: "FRUTAS E VEGETAIS", dica: "Separar frutas maduras das verdes.", motivo: "Frutas liberam gás etileno, que acelera o amadurecimento (e o apodrecimento) de outros vegetais próximos." },
-            { chaves: ['leite', 'queijo', 'iogurte'], tipo: 'frio', titulo: "LATICÍNIOS", dica: "Não guardar na porta da geladeira.", motivo: "A porta é o local com maior variação térmica. Laticínios precisam de estabilidade para não coalharem antes do prazo." },
-            { chaves: ['sabão', 'detergente', 'alvejante'], tipo: 'limpeza', titulo: "PRODUTOS DE LIMPEZA", dica: "Manter longe de alimentos e em local alto.", motivo: "Evita a contaminação cruzada química e garante a segurança contra ingestão acidental por crianças ou animais." }
+            { chaves: ['banana', 'maçã', 'manga'], tipo: 'hortifruti', titulo: "FRUTAS CLIMATÉRICAS", dica: "Armazenar fora da geladeira até amadurecer.", motivo: "Essas frutas liberam gás etileno. Se guardadas em sacos fechados ou locais abafados, o gás acelera o apodrecimento de tudo ao redor." },
+            { chaves: ['alface', 'rúcula', 'couve'], tipo: 'hortifruti', titulo: "FOLHOSAS", dica: "Lavar, secar bem e guardar em potes com papel toalha.", motivo: "A umidade excessiva nas folhas favorece a proliferação de fungos e bactérias, fazendo-as murchar e apodrecer em poucos dias." },
+            { chaves: ['tomate'], tipo: 'hortifruti', titulo: "TOMATES", dica: "Guardar com a 'bundinha' para cima e fora da geladeira (se verdes).", motivo: "O frio da geladeira rompe as membranas celulares do tomate, alterando o sabor e deixando a textura farinhenta." },
+            { chaves: ['batata', 'cebola'], tipo: 'seco', titulo: "TUBÉRCULOS", dica: "Local escuro, arejado e NUNCA juntas.", motivo: "A cebola libera gases que fazem a batata brotar (germinar) muito mais rápido, perdendo suas propriedades nutricionais." },
+            { chaves: ['uva', 'morango'], tipo: 'hortifruti', titulo: "FRUTAS SENSÍVEIS", dica: "Só lavar na hora exata de comer.", motivo: "A água remove a proteção natural da casca e acelera a oxidação e o surgimento de mofo." }
         ];
 
         sugestoes.forEach(s => {
@@ -278,10 +237,9 @@
             }
         });
 
-        container.innerHTML = html || "<p style='color:#9fb3c8; font-size:0.85rem;'>As sugestões técnicas aparecerão aqui conforme você adicionar itens.</p>";
+        container.innerHTML = html || "<p style='color:#9fb3c8; font-size:0.85rem;'>As recomendações de hortifrúti aparecerão aqui conforme você adicionar os itens.</p>";
     }
 
-    if (Notification.permission === "granted") document.getElementById('btn-notificacao').style.display = 'none';
     renderizar();
 </script>
 </body>
