@@ -3,37 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Despensa Pro - Versão Estável</title>
+    <title>Despensa Pro - Premium Edition</title>
     <style>
-        :root { --primary: #1b5e20; --primary-light: #4caf50; --accent: #00acc1; --warning: #ff9100; --danger: #d32f2f; --bg: #f4f7f6; }
-        body { font-family: 'Segoe UI', system-ui, sans-serif; background-color: var(--bg); margin: 0; padding-bottom: 250px; color: #333; }
-        header { background: var(--primary); color: white; padding: 10px; text-align: center; position: sticky; top: 0; z-index: 100; }
-        header h1 { margin: 0; font-size: 1.2rem; }
+        :root { 
+            --primary: #1b5e20; 
+            --primary-light: #4caf50; 
+            --accent: #00acc1; 
+            --warning: #ff9100; 
+            --danger: #d32f2f; 
+            --bg: #f4f7f6; 
+            --ad-gradient: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+        }
+        
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background-color: var(--bg); margin: 0; padding-bottom: 250px; color: #333; overflow-x: hidden; }
+
+        /* MODAL DE ANÚNCIO (POP-UP) */
+        #ad-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(5px);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 1000; transition: opacity 0.3s ease;
+        }
+        .modal-content {
+            background: white; width: 90%; max-width: 350px; border-radius: 20px;
+            overflow: hidden; position: relative; text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4); animation: slideUp 0.5s ease;
+        }
+        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        .modal-header { background: var(--ad-gradient); padding: 40px 20px; color: white; }
+        .modal-body { padding: 25px; }
+        .modal-body h3 { margin: 0 0 10px; font-size: 1.2rem; }
+        .modal-body p { font-size: 0.9rem; color: #666; margin-bottom: 20px; }
+        
+        .btn-go {
+            display: block; background: var(--ad-gradient); color: white;
+            padding: 12px; text-decoration: none; border-radius: 10px;
+            font-weight: bold; margin-bottom: 10px;
+        }
+        
+        #close-btn {
+            background: #eee; color: #999; border: none; padding: 8px 20px;
+            border-radius: 5px; cursor: not-allowed; font-size: 0.8rem;
+        }
+        #close-btn.active { background: #ff5252; color: white; cursor: pointer; }
+
+        /* ESTRUTURA DO APP */
+        header { background: var(--primary); color: white; padding: 12px; text-align: center; position: sticky; top: 0; z-index: 100; }
+        header h1 { margin: 0; font-size: 1.1rem; letter-spacing: 1px; }
+
         .container { max-width: 450px; margin: 0 auto; padding: 10px; }
-        .card { background: #fff; border-radius: 10px; padding: 15px; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        h2 { font-size: 0.75rem; color: var(--primary); text-transform: uppercase; margin-bottom: 10px; border-bottom: 1px solid #eee; font-weight: 800; }
+        .card { background: #fff; border-radius: 12px; padding: 15px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        h2 { font-size: 0.75rem; color: var(--primary); text-transform: uppercase; margin-bottom: 12px; border-bottom: 1px solid #eee; padding-bottom: 5px; font-weight: 800; }
+        
         .form-group { margin-bottom: 10px; }
         label { font-size: 0.65rem; font-weight: 800; color: #666; display: block; margin-bottom: 3px; }
         input { width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ccc; box-sizing: border-box; font-size: 16px; }
-        .btn { width: 100%; padding: 14px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; }
-        .btn-add { background: var(--primary); color: white; }
-        .item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #fff; border-radius: 8px; margin-bottom: 8px; border-left: 5px solid var(--primary-light); border: 1px solid #eee; }
+        
+        .btn-add { width: 100%; padding: 14px; border: none; border-radius: 8px; background: var(--primary); color: white; font-weight: bold; cursor: pointer; }
+
+        .item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #fff; border-radius: 10px; margin-bottom: 8px; border-left: 6px solid var(--primary-light); border: 1px solid #eee; }
         .item.vencendo { border-left-color: var(--warning); background: #fffcf0; }
         .item.vencido { border-left-color: var(--danger); background: #fff5f5; }
-        .item b { font-size: 0.95rem; display: block; }
-        .item small { font-size: 0.75rem; color: #666; }
-        .tip-card { background: #e1f5fe; border-radius: 8px; padding: 12px; margin-top: 10px; border-left: 4px solid var(--accent); font-size: 0.8rem; line-height: 1.4; }
+
+        .tip-card { background: #e1f5fe; border-radius: 8px; padding: 12px; margin-top: 10px; border-left: 4px solid var(--accent); font-size: 0.8rem; }
+        .support { display: block; background: #009ee3; color: white; text-align: center; text-decoration: none; padding: 15px; border-radius: 10px; font-weight: bold; margin-top: 10px; }
         #backup-area { width: 100%; height: 60px; font-size: 0.7rem; margin-top: 10px; display: none; }
-        .support { display: block; background: #009ee3; color: white; text-align: center; text-decoration: none; padding: 15px; border-radius: 10px; font-weight: bold; margin-top: 20px; }
     </style>
 </head>
 <body>
+
+<div id="ad-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <div style="font-size: 3rem;">🎁</div>
+        </div>
+        <div class="modal-body">
+            <h3>Ofertas Exclusivas!</h3>
+            <p>Aproveite os melhores produtos com descontos especiais hoje.</p>
+            <a href="https://meli.la/1q6GdMB" target="_blank" class="btn-go">VER OFERTAS AGORA</a>
+            <button id="close-btn" disabled>Aguarde 5s...</button>
+        </div>
+    </div>
+</div>
 
 <header><h1>DESPENSA PRO</h1></header>
 
 <div class="container">
     <div class="card">
-        <h2>📦 CADASTRAR PRODUTO</h2>
+        <h2>📦 NOVO REGISTRO</h2>
         <div class="form-group">
             <label>NOME DO ALIMENTO</label>
             <input type="text" id="nome" list="sugestoes" placeholder="Ex: Carne Bovina">
@@ -42,11 +100,11 @@
             <label>DATA DE VALIDADE</label>
             <input type="date" id="data">
         </div>
-        <button class="btn btn-add" onclick="adicionar()">SALVAR NO ESTOQUE</button>
+        <button class="btn-add" onclick="adicionar()">SALVAR NO ESTOQUE</button>
     </div>
 
     <div class="card">
-        <h2>📋 MONITORAMENTO</h2>
+        <h2>📋 MONITORAMENTO ATIVO</h2>
         <div id="lista-alimentos"></div>
     </div>
 
@@ -56,26 +114,40 @@
     </div>
 
     <div class="card" style="background: #f1f8e9;">
-        <h2>☁️ BACKUP SEGURO</h2>
+        <h2>☁️ SINCRONIZAÇÃO</h2>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-            <button class="btn" style="background: #eceff1; font-size: 0.7rem;" onclick="gerarBackup()">GERAR CÓDIGO</button>
-            <button class="btn" style="background: #fff; border: 1px solid #ccc; font-size: 0.7rem;" onclick="restaurarBackup()">RESTAURAR</button>
+            <button onclick="gerarBackup()" style="padding:10px; border-radius:5px; border:none; background:#eceff1;">GERAR</button>
+            <button onclick="restaurarBackup()" style="padding:10px; border-radius:5px; border:1px solid #ccc; background:#fff;">RESTAURAR</button>
         </div>
-        <textarea id="backup-area" placeholder="Cole seu código aqui..."></textarea>
+        <textarea id="backup-area"></textarea>
     </div>
 
-    <a href="https://mpago.la/2cixZQ9" target="_blank" class="support">APOIAR PROJETO</a>
+    <a href="https://mpago.la/2cixZQ9" target="_blank" class="support">APOIAR VIA MERCADO PAGO</a>
 </div>
 
 <datalist id="sugestoes">
-    <option value="Arroz"><option value="Feijão"><option value="Carne Bovina"><option value="Frango">
-    <option value="Banana"><option value="Leite"><option value="Ovos"><option value="Alface">
+    <option value="Arroz"><option value="Feijão"><option value="Carne Bovina"><option value="Banana"><option value="Leite"><option value="Alface">
 </datalist>
 
 <script>
-    // Chave única para garantir estabilidade dos dados
-    const DB_KEY = 'despensa_pro_final_v1';
+    const DB_KEY = 'despensa_pro_v_pop';
     let estoque = JSON.parse(localStorage.getItem(DB_KEY)) || [];
+
+    // LÓGICA DO TEMPORIZADOR DO POP-UP
+    let timeLeft = 5;
+    const closeBtn = document.getElementById('close-btn');
+    const timer = setInterval(() => {
+        timeLeft--;
+        if(timeLeft > 0) {
+            closeBtn.innerText = `Aguarde ${timeLeft}s...`;
+        } else {
+            clearInterval(timer);
+            closeBtn.innerText = "FECHAR ANÚNCIO";
+            closeBtn.disabled = false;
+            closeBtn.classList.add('active');
+            closeBtn.onclick = () => document.getElementById('ad-modal').style.display = 'none';
+        }
+    }, 1000);
 
     function adicionar() {
         const nome = document.getElementById('nome').value;
@@ -88,7 +160,7 @@
     }
 
     function deletar(id) {
-        if(confirm("Remover este item?")) {
+        if(confirm("Remover item?")) {
             estoque = estoque.filter(i => i.id !== id);
             salvar();
         }
@@ -114,8 +186,8 @@
                 <div class="item ${classe}">
                     <div>
                         <b>${i.nome}</b>
-                        <small>${dias < 0 ? 'Vencido' : 'Vence em '+dias+' dias'}</small>
-                        <small style="display:block; color:#999">Validade: ${dataF}</small>
+                        <span style="font-size:0.75rem; color:${dias <= 5 ? 'red' : '#666'}">${dias < 0 ? 'Vencido' : 'Vence em '+dias+' dias'}</span>
+                        <span style="font-size:0.7rem; color:#999; display:block;">Data: ${dataF}</span>
                     </div>
                     <button onclick="deletar(${i.id})" style="background:none; border:none; color:#ccc; font-size:1.2rem;">✕</button>
                 </div>`;
@@ -126,11 +198,11 @@
     function aplicarGuia(nome, container) {
         const n = nome.toLowerCase();
         const base = [
-            { c: ['arroz', 'feijão'], t: "Grãos", d: "Mantenha em recipientes herméticos para evitar carunchos e umidade." },
-            { c: ['carne', 'frango'], t: "Proteínas", d: "A oxidação lipídica ocorre rápido acima de 4°C. Mantenha em frio máximo." },
-            { c: ['banana', 'maçã'], t: "Climatéricos", d: "Liberam gás etileno. Devem ser mantidos ventilados e longe de folhas." },
-            { c: ['leite', 'queijo'], t: "Laticínios", d: "Altamente perecíveis. Após aberto, consumir em no máximo 3 dias." },
-            { c: ['alface', 'folhas'], t: "Hortaliças", d: "Use papel toalha no pote para absorver a umidade e evitar fungos." }
+            { c: ['arroz', 'feijão'], t: "Grãos", d: "Potes herméticos evitam carunchos." },
+            { c: ['carne', 'frango'], t: "Proteínas", d: "Mantenha em frio máximo." },
+            { c: ['banana', 'maçã'], t: "Climatéricos", d: "Liberam etileno; mantenha ventilados." },
+            { c: ['leite', 'queijo'], t: "Laticínios", d: "Após aberto, consumir em até 3 dias." },
+            { c: ['alface', 'folhas'], t: "Hortaliças", d: "Use papel toalha para controlar a umidade." }
         ];
         base.forEach(item => {
             if (item.c.some(key => n.includes(key))) {
@@ -146,7 +218,7 @@
         const area = document.getElementById('backup-area');
         area.value = code; area.style.display = 'block';
         area.select(); document.execCommand('copy');
-        alert("Código de backup copiado!");
+        alert("Backup copiado!");
     }
 
     function restaurarBackup() {
@@ -154,9 +226,9 @@
         try {
             estoque = JSON.parse(atob(code));
             salvar();
-            alert("Dados restaurados!");
+            alert("Restaurado!");
             document.getElementById('backup-area').style.display = 'none';
-        } catch(e) { alert("Código inválido!"); }
+        } catch(e) { alert("Erro no código!"); }
     }
 
     renderizar();
